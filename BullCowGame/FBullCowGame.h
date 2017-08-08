@@ -11,12 +11,13 @@ struct FBullCowCount
 };
 
 
-enum class EWordStatus
+enum class EGuessStatus
 {
 	OK,
 	Not_Isogram,
 	Word_Too_Short,
 	Word_Too_Long,
+	Wrong_Word_Length, //catch all for use before implementing too long/ too short
 	Invalid_Character,
 	Not_Lowercase //is better to cast the given word to lower case I think
 };
@@ -33,7 +34,7 @@ public:
 	int32 GetHiddenWordLength() const;
 
 	bool IsGameWon() const;
-	EWordStatus CheckGuessValidity(FString) const;
+	EGuessStatus CheckGuessValidity(FString CurrentGuess) const;
 
 	void Reset(int MaxTries); // TODO make a more rich return value
 
