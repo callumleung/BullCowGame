@@ -88,35 +88,39 @@ void printIntro() {
 //loop continually until valid guess is entered
 FText GetValidGuess() {
 
-	
-	//get guess from player
-	std:: cout << "Enter isogram guess: ";
-	FText Guess = "";
-	std::getline(std:: cin, Guess);
+	EGuessStatus Status = EGuessStatus::Invalid_Character;
+	do {
+		//get guess from player
+		std::cout << "Enter isogram guess: ";
+		FText Guess = "";
+		std::getline(std::cin, Guess);
 
-	//checking for valid guess length
-	EGuessStatus Status = BCGame.CheckGuessValidity(Guess);
+		//checking for valid guess length
+		 Status = BCGame.CheckGuessValidity(Guess);
 
-	switch (Status)
-	{
+		switch (Status)
+		{
 
-	case EGuessStatus::Wrong_Word_Length:
-		std::cout << "Please enter a " << BCGame.GetHiddenWordLength << " word.\n";
-		break;
+		case EGuessStatus::Wrong_Word_Length:
+			std::cout << "Please enter a " << BCGame.GetHiddenWordLength() << " word.\n";
+			break;
 
-	case EGuessStatus::Not_Lowercase:
-		std::cout << "Please enter guess in lowercase format." << std::endl;
+		case EGuessStatus::Not_Lowercase:
+			std::cout << "Please enter guess in lowercase format." << std::endl;
+			break;
 
-	case EGuessStatus::Not_Isogram:
-		std::cout << "Please enter an isogram guess. \n";
+		case EGuessStatus::Not_Isogram:
+			std::cout << "Please enter an isogram guess. \n";
+			break;
 
-	default:
-		return Guess;
-	}
+		default:
+			return Guess;
+		}
 
 
+		std::cout << std::endl;
+	} while (Status != EGuessStatus::OK); //keep looping until no errors are returned
 
-	return Guess;
 }
 
 bool AskToPlayAgain()
