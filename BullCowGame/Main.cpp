@@ -50,7 +50,8 @@ void PlayGame()
 	std::cout << "Max tries = " << MaxTries << std:: endl;
 
 	//TODO  change to while loop
-	for (int32 i = 1; i <= MaxTries; i++) {
+	//loop asking for guess until game is oine and bool isGameWon is true
+	while (!BCGame.IsGameWon() && BCGame.GetCurrentTry() <= MaxTries) {
 
 
 		int32 CurrentTry = BCGame.GetCurrentTry();
@@ -60,12 +61,12 @@ void PlayGame()
 	
 		
 		//submit valid guess and recieve counts
-		FBullCowCount BullCowCount = BCGame.SubmitGuess(Guess);
+		FBullCowCount BullCowCount = BCGame.SubmitValidGuess(Guess);
 		//print number of cows and bulls
 		std::cout << "Bulls = " << BullCowCount.Bulls;
 		std::cout << ". Cows = " << BullCowCount.Cows << "." << std:: endl;
 		//PrintGuess(Guess);
-		std:: cout << "Guesses remaining:" << 5 - i << std::endl << std::endl;
+		std:: cout << "Guesses remaining:" << 5 - BCGame.GetCurrentTry() << std::endl << std::endl;
 
 		//TODO summarise game
 	}
@@ -77,7 +78,7 @@ void PlayGame()
 
 void printIntro() {
 	// int32 WORD_LENGTH = BCGame.GetHiddenWordLength;
-	std:: cout << "Welcome to Bulls and Cows. \n";
+	std:: cout << "\n\nWelcome to Bulls and Cows. \n";
 	std:: cout << "Guess the " << BCGame.GetHiddenWordLength();
 	std:: cout << " letter isogram.\n";
 
@@ -89,10 +90,11 @@ void printIntro() {
 FText GetValidGuess() {
 
 	EGuessStatus Status = EGuessStatus::Invalid_Character;
+	FText Guess = "";
 	do {
 		//get guess from player
 		std::cout << "Enter isogram guess: ";
-		FText Guess = "";
+		
 		std::getline(std::cin, Guess);
 
 		//checking for valid guess length
@@ -114,13 +116,13 @@ FText GetValidGuess() {
 			break;
 
 		default:
-			return Guess;
+			break;
 		}
 
 
 		std::cout << std::endl;
 	} while (Status != EGuessStatus::OK); //keep looping until no errors are returned
-
+	return Guess;
 }
 
 bool AskToPlayAgain()
