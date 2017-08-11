@@ -1,21 +1,19 @@
 /*This is the console executable, that makes use of the BullCow class. 
 This acts as the view in a MVC pattern, and is responsible for all user interaction.
 For game logic see FBullCowGame class.
-
-
 */
 
-
+#pragma once
 
 #include <iostream>
 #include <string>
 #include "FBullCowGame.h"
 
-//using namespace std;
+//using Unreal syntax
 using FText = std::string;
 using int32 = int;
 
-
+//function prototypes since outside a class
 void printIntro();
 void PrintGameSummary(bool);
 void PlayGame();
@@ -24,7 +22,7 @@ FText GetValidGuess();
 bool AskToPlayAgain();
 
 
-FBullCowGame BCGame; //instantiate a new game
+FBullCowGame BCGame; //instantiate a new game resused across games
 
 
 int main()
@@ -44,32 +42,29 @@ int main()
 	
 }
 
+//plays a single instance of the game to completion win/lose
 void PlayGame()
 {
 	BCGame.Reset(); 
 	int MaxTries = BCGame.GetMaxTries();
 	std::cout << "Max tries = " << MaxTries << std:: endl;
 
-	//TODO  change to while loop
-	//loop asking for guess until game is oine and bool isGameWon is true
 	while (!BCGame.IsGameWon() && BCGame.GetCurrentTry() <= MaxTries) {
 
 
 		int32 CurrentTry = BCGame.GetCurrentTry();
-		std::cout << "Try " << CurrentTry << ". Enter your guess. \n";
+		std::cout << "Try " << CurrentTry <<" of " << BCGame.GetMaxTries() << ". ";
 		FText Guess = GetValidGuess(); //TODO vaildate guess
 
 	
 		
 		//submit valid guess and recieve counts
 		FBullCowCount BullCowCount = BCGame.SubmitValidGuess(Guess);
+
 		//print number of cows and bulls
 		std::cout << "Bulls = " << BullCowCount.Bulls;
-		std::cout << ". Cows = " << BullCowCount.Cows << "." << std:: endl;
-		//PrintGuess(Guess);
-		//std:: cout << "Guesses remaining:" << BCGame.GetMaxTries() - BCGame.GetCurrentTry() << std::endl << std::endl;
+		std::cout << ". Cows = " << BullCowCount.Cows << ".\n" << std:: endl;
 
-		//TODO summarise game
 	}
 
 	PrintGameSummary(BCGame.IsGameWon());
@@ -81,6 +76,7 @@ void PlayGame()
 
 void printIntro() {
 	// int32 WORD_LENGTH = BCGame.GetHiddenWordLength;
+
 	std:: cout << "\n\nWelcome to Bulls and Cows. \n";
 	std:: cout << "Guess the " << BCGame.GetHiddenWordLength();
 	std:: cout << " letter isogram.\n";
@@ -136,7 +132,7 @@ FText GetValidGuess() {
 		}
 
 
-		std::cout << std::endl;
+		//std::cout << std::endl;
 	} while (Status != EGuessStatus::OK); //keep looping until no errors are returned
 	return Guess;
 }

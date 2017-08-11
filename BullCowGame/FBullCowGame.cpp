@@ -1,20 +1,11 @@
+#pragma once
+
 #include "FBullCowGame.h"
 #include <string>
 
+//Using Unreal coding syntax
 using FString = std::string;
 using int32 = int;
-
-void FBullCowGame::Reset()
-{
-	
-	MyMaxTries = 5;
-	bIsGameWon = false;
-
-	const FString HIDDEN_WORD = "planet";
-	MyHiddenWord = HIDDEN_WORD;
-	MyCurrentTry = 1;
-	return;
-}
 
 FBullCowGame::FBullCowGame()
 {
@@ -23,9 +14,25 @@ FBullCowGame::FBullCowGame()
 
 }
 
+void FBullCowGame::Reset()
+{
+	
+	
+	bIsGameWon = false;
+
+	const FString HIDDEN_WORD = "planet"; //Must be an isogram
+	MyHiddenWord = HIDDEN_WORD;
+	MyCurrentTry = 1;
+	return;
+}
+
+
+
 int32 FBullCowGame::GetMaxTries() const
 {
-	return MyMaxTries;
+
+	TMap<int32, int32> WordLengthToMaxTries{ {3,4}, {4, 6}, {5,8}, {6,10} };
+	return WordLengthToMaxTries[MyHiddenWord.length()];
 }
 
 
@@ -56,7 +63,7 @@ EGuessStatus FBullCowGame:: CheckGuessValidity(FString CurrentGuess) const
 	}
 
 	//if guess isnt all lower case
-	else if (false)
+	else if (!IsLowerCase(CurrentGuess))
 	{
 		return EGuessStatus::Not_Lowercase;//TODO write function
 	}
@@ -156,3 +163,17 @@ bool FBullCowGame::IsIsogram(FString Word) const
 	}
 	return true; //for example if /0 is entered 
 }
+
+bool FBullCowGame::IsLowerCase(FString Word) const
+{
+	//for all lower case function loops through entire word then moves to final return statement if no uppercase found
+
+	for (auto Letter: Word)
+	{
+		if (!islower(Letter)){	return false; }
+	}
+	
+	return true;
+}
+
+
