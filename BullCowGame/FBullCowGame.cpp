@@ -4,10 +4,10 @@
 using FString = std::string;
 using int32 = int;
 
-void FBullCowGame::Reset(int32 MaxTries)
+void FBullCowGame::Reset()
 {
 	
-	MyMaxTries = MaxTries;
+	MyMaxTries = 5;
 	bIsGameWon = false;
 
 	const FString HIDDEN_WORD = "planet";
@@ -18,7 +18,7 @@ void FBullCowGame::Reset(int32 MaxTries)
 
 FBullCowGame::FBullCowGame()
 {
-	Reset(8);
+	Reset();
 
 
 }
@@ -50,15 +50,15 @@ bool FBullCowGame::IsGameWon() const
 EGuessStatus FBullCowGame:: CheckGuessValidity(FString CurrentGuess) const
 {
 	//if guess isnt an isogram
-	if (false)
+	if (!IsIsogram(CurrentGuess))
 	{
-		return EGuessStatus::Not_Isogram;
+		return EGuessStatus::Not_Isogram;//TODO write function
 	}
 
 	//if guess isnt all lower case
 	else if (false)
 	{
-		return EGuessStatus::Not_Lowercase;
+		return EGuessStatus::Not_Lowercase;//TODO write function
 	}
 
 	//if the guess length is wrong 
@@ -78,13 +78,6 @@ EGuessStatus FBullCowGame:: CheckGuessValidity(FString CurrentGuess) const
 
 	return EGuessStatus::OK;
 }
-
-
-
-
-
-
-
 
 
 //recives a valid guess, increments turn and returns count.
@@ -131,4 +124,35 @@ FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess)
 		bIsGameWon = false;
 	}
 	return FBullCowCount;
+}
+
+bool FBullCowGame::IsIsogram(FString Word) const
+{
+	//treat 0 and 1 letter words as isograms
+
+	//set up map
+	if (Word.length() <= 1)
+	{
+		true;
+	}
+
+	TMap <char, bool> LetterSeen;
+
+	for (auto Letter : Word)
+	{
+
+		Letter = tolower(Letter);
+		//loop through letters of guess 
+		if (LetterSeen[Letter])
+		{
+			return false; //not an isogram if already seen
+		}
+		else {
+			LetterSeen[Letter] = true;
+			//otherwise
+				//add letter to map as seen
+		}
+
+	}
+	return true; //for example if /0 is entered 
 }

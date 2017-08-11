@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <map>
+#define TMap std::map
 
 using FString = std:: string;
 using int32 = int;
@@ -37,7 +39,7 @@ public:
 	bool IsGameWon() const;
 	EGuessStatus CheckGuessValidity(FString CurrentGuess) const;
 
-	void Reset(int MaxTries); // TODO make a more rich return value
+	void Reset(); // TODO make a more rich return value
 
 	// counts bulls and cows and increases try #, assuming valid guess
 	FBullCowCount SubmitValidGuess(FString);
@@ -49,5 +51,6 @@ private:
 	int32 MyMaxTries;
 	FString MyHiddenWord;
 	bool bIsGameWon;
+	bool IsIsogram(FString word) const;
 
 };

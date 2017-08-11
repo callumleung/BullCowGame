@@ -17,6 +17,7 @@ using int32 = int;
 
 
 void printIntro();
+void PrintGameSummary(bool);
 void PlayGame();
 void PrintGuess(FText);
 FText GetValidGuess();
@@ -45,7 +46,7 @@ int main()
 
 void PlayGame()
 {
-	BCGame.Reset(8); 
+	BCGame.Reset(); 
 	int MaxTries = BCGame.GetMaxTries();
 	std::cout << "Max tries = " << MaxTries << std:: endl;
 
@@ -66,10 +67,12 @@ void PlayGame()
 		std::cout << "Bulls = " << BullCowCount.Bulls;
 		std::cout << ". Cows = " << BullCowCount.Cows << "." << std:: endl;
 		//PrintGuess(Guess);
-		std:: cout << "Guesses remaining:" << 5 - BCGame.GetCurrentTry() << std::endl << std::endl;
+		//std:: cout << "Guesses remaining:" << BCGame.GetMaxTries() - BCGame.GetCurrentTry() << std::endl << std::endl;
 
 		//TODO summarise game
 	}
+
+	PrintGameSummary(BCGame.IsGameWon());
 }
 
 
@@ -85,6 +88,19 @@ void printIntro() {
 	return;
 }
 
+void PrintGameSummary(bool IsGameWon) {
+
+	if (IsGameWon)
+	{
+		std::cout << "Congratulations! You won!\n";
+	}
+	else
+	{
+		std::cout << "Better luck next time...\n";
+	}
+
+	return;
+}
 //read in guess and return guess
 //loop continually until valid guess is entered
 FText GetValidGuess() {
@@ -127,7 +143,7 @@ FText GetValidGuess() {
 
 bool AskToPlayAgain()
 {
-	std:: cout << "Do you want to play again? (y/n)\n";
+	std:: cout << "Do you want to play again with the same hidden word? (y/n)\n";
 	FText response = "";
 	std::getline(std::cin, response);
 	std:: cout << std:: endl;
